@@ -1,20 +1,40 @@
 
 
 
-//time pushed to the h1 in information box.
-var date = moment().format('l');;
-console.log(date);
+//date pushed to the h1 in information box.
+var date = moment().format('l');
 $(".date").append("(" + date + ")");
 
-var long1;
-var cityName = $(this).attr("city-search");
+
+//var cityName = cityNameArray[0];
+var cityNameArray = [];
+console.log(cityNameArray)
+var lat;
+var long;
+
+//need to work on this to have the city pop up below the search box,
+// it has to be stored in local sorage and then it needs to be able to be clicked
+// so as to populate the boxes with weather info.
+// rendering names of cities under search bar
+function renderCities(cityName) {
+
+    //$(".city-dump").html("");
+
+      for(var i=0; i < cityNameArray; i++){
+        
+        let newCity = $("<div>" + cityNameArray[i] + "</div>");
+        
+        $(".city-dump").append(newCity);
+        
+      console.log(newCity)
+      };
+};
+
 //function to seak out info from api
-function weatherRetrieval(){
-    var apiKey =  "94d00576fff4b5480bdc9bbfa8996d40";
-    var urlStart = "http://api.openweathermap.org/data/2.5/weather?q=";
-    var appid =  "&uvi/forecast&appid=";
-    //var city = "grand rapids";
-    var urlQuery = urlStart + cityName + appid + apiKey;
+function weatherRetrieval(city){
+    
+    
+    var urlQuery = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&uvi/forecast&appid=94d00576fff4b5480bdc9bbfa8996d40";
 
     $.ajax({
         url: urlQuery,
@@ -26,17 +46,15 @@ function weatherRetrieval(){
         $(".temp").append("Temperature: " + Math.floor(273.15 - weather.main.temp) + " &#8451;")
         $(".humidity").append("Humidity: " + weather.main.humidity + " %");
         $(".wind-speed").append("Wind Speed: " + weather.wind.speed + " MPH")
-        //$(".uv").append("UV Index: " + )
-        //may need to make a separate function that retrieves lat and long from previous 
-        // request in order to get the uv index.
-        console.log(weather)
+
         long = weather.coord.lon;
         lat = weather.coord.lat;
-   
-})
-}
+       
 
-function uvRetrieval(){
+        uvRetrieval(lat, long);
+});
+};
+function uvRetrieval(lat, long){
         var urlQuery2 = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + long + "&appid=94d00576fff4b5480bdc9bbfa8996d40";
         
     $.ajax({
@@ -46,37 +64,57 @@ function uvRetrieval(){
     .then(function(uv){
        
         $(".uv").append("UV index: " + uv.value);
+    });
+};
+
+//five day weather forcast population.
+function weather5Day(city){
+    var urlQuery3 = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=94d00576fff4b5480bdc9bbfa8996d40&units=imperial";
+    
+
+    $.ajax({
+        url: urlQuery3,
+        method: "GET"
     })
-}
-
-
-weatherRetrieval()
-var long;
-var lat
-setTimeout(function(){
-uvRetrieval();
-},2000);
-
-//This works (above), I need to connect the search entry to the city.  Then the button 
-// to the search. 
+    .then(function(fiveDay){
+        console.log(fiveDay);
+    
+        
+        var index = 1
+        for(var i=0 ; i < fiveDay.list.length ; i++ ){
+            var date = moment().add(i, 'days').calendar();
+            
+        if(fiveDay.list[i].dt_txt.indexOf("12:00:00") !== -1){
+             $(".day" + index).append("Date: " + fiveDay.list[i].dt_txt + "<br>") 
+             $(".day" + index).append("Temp: " + fiveDay.list[i].main.temp + " &#8451;" + "<br>")
+             $(".day" + index).append("Humidity: " + fiveDay.list[i].main.humidity + "%")
+             index++
+            
+            
+             
+            
+        } 
+    }
+});
+};
 
 //Need to push to the list class=city-dump, those should be buttons and saved on your
 // local.
 
-// 5 day forcast may be another api request.
-
 //button for city search
-$(".city-search").on("click",function(event){
+$(".city-search").on("click", function(event){
     
-        event.preventDefault();
+        
         // This line of code will grab the input from the textbox
-        var movie = $("#movie-input").val().trim();
+        var city = $(".city-input").val().trim();
+        $("city-input").val("")
+       
+        
 
-        // The movie from the textbox is then added to our array
-        movies.push(movie);
-
-        // Calling renderButtons which handles the processing of our movie array
-        renderButtons();
-      
+        
+        // // Calling renderButtons which handles the processing of our movie array
+        // renderCities()
+        weatherRetrieval(city)
+        weather5Day(city);
 
 });

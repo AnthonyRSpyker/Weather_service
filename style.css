@@ -17,7 +17,8 @@ header{
     border:blue  solid;
     background-color: white;
     padding-top: 100px;
-    margin-top: 10px
+    margin-top: 10px;
+    color: black;
 }
 
 .info-box{
@@ -42,4 +43,6 @@ header{
     margin: 12px;
     background-color: blue;
     color: white;
+    font-size: 10px;
+    text-align: left;
 }
