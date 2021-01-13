@@ -1,11 +1,3 @@
-
-
-
-//date pushed to the h1 in information box.
-var date = moment().format('l');
-$(".date").append("(" + date + ")");
-
-
 //var cityName = cityNameArray[0];
 var cityNameArray = [];
 console.log(cityNameArray)
@@ -32,7 +24,11 @@ function renderCities(cityName) {
 
 //function to seak out info from api
 function weatherRetrieval(city){
-    
+    //erases previous info so new info wont double up.
+    $(".new").text("");
+    //date pushed to the h1 in information box.
+    var date = moment().format('l');
+    $(".date").append("(" + date + ")");
     
     var urlQuery = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&uvi/forecast&appid=94d00576fff4b5480bdc9bbfa8996d40";
 
@@ -55,6 +51,9 @@ function weatherRetrieval(city){
 });
 };
 function uvRetrieval(lat, long){
+    //erases previous info so new info wont double up.
+    $(".uv").text("");
+
         var urlQuery2 = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + long + "&appid=94d00576fff4b5480bdc9bbfa8996d40";
         
     $.ajax({
@@ -69,16 +68,16 @@ function uvRetrieval(lat, long){
 
 //five day weather forcast population.
 function weather5Day(city){
+    //erases previous info so new info wont double up.
+    $(".boxes").text("");
+
     var urlQuery3 = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=94d00576fff4b5480bdc9bbfa8996d40&units=imperial";
     
-
     $.ajax({
         url: urlQuery3,
         method: "GET"
     })
     .then(function(fiveDay){
-        console.log(fiveDay);
-    
         
         var index = 1
         for(var i=0 ; i < fiveDay.list.length ; i++ ){
@@ -88,10 +87,7 @@ function weather5Day(city){
              $(".day" + index).append("Date: " + fiveDay.list[i].dt_txt + "<br>") 
              $(".day" + index).append("Temp: " + fiveDay.list[i].main.temp + " &#8451;" + "<br>")
              $(".day" + index).append("Humidity: " + fiveDay.list[i].main.humidity + "%")
-             index++
-            
-            
-             
+             index++  
             
         } 
     }
@@ -103,16 +99,12 @@ function weather5Day(city){
 
 //button for city search
 $(".city-search").on("click", function(event){
-    
-        
+
         // This line of code will grab the input from the textbox
         var city = $(".city-input").val().trim();
         $("city-input").val("")
        
-        
-
-        
-        // // Calling renderButtons which handles the processing of our movie array
+        // Calling renderButtons which handles the processing of our movie array
         // renderCities()
         weatherRetrieval(city)
         weather5Day(city);
