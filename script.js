@@ -8,18 +8,22 @@ var long;
 // it has to be stored in local sorage and then it needs to be able to be clicked
 // so as to populate the boxes with weather info.
 // rendering names of cities under search bar
-function renderCities(cityName) {
+var cityArray = []
+function renderCities(city) {
+    
+    $(".city-dump").text("");
+    
+    cityArray.push(city);
+    
 
-    //$(".city-dump").html("");
+      for(var i=0; i < cityArray.length; i++){
 
-      for(var i=0; i < cityNameArray; i++){
+        let newCity = $("<div class=city" + i + ">" + cityArray[i] + "</div>");
         
-        let newCity = $("<div>" + cityNameArray[i] + "</div>");
+        $(".city-dump").prepend(newCity);
         
-        $(".city-dump").append(newCity);
-        
-      console.log(newCity)
-      };
+      
+    };
 };
 
 //function to seak out info from api
@@ -98,7 +102,7 @@ function weather5Day(city){
 // local.
 
 //button for city search
-$(".city-search").on("click", function(event){
+$(".city-search").on("click", function(){
 
         // This line of code will grab the input from the textbox
         var city = $(".city-input").val().trim();
@@ -108,5 +112,21 @@ $(".city-search").on("click", function(event){
         // renderCities()
         weatherRetrieval(city)
         weather5Day(city);
+        renderCities(city);
+        storagePush(city);
 
 });
+
+function storagePush(city){
+    // var push = $(this).attr(".push")
+    for( var i = 0; i < cityArray.length; i++){
+        var cityClass = i;
+    }
+    var cityKey = ".city" + cityClass
+    console.log(cityKey)
+    localStorage.setItem(cityKey, city);
+    ;
+    
+}
+
+$(".city-dump").val(localStorage.getItem(".city0"));
