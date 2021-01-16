@@ -1,6 +1,8 @@
 # Weather_service
 This is a web application that informs the user of the weather in the area that they are interested in.  The weather application is supported by jquery, bootstrap and open weather map api.  A discription of how to use the online application is as follows.
 
+link to site: https://anthonyrspyker.github.io/Weather_service/
+
 ![no search image of page.](images/no_search.png)
 As can be seen above, the image of the initial page with no searches performed.  The page has a search bar with some open div areas at which will be populated once a search is completed.
 ![image of a search for denvers weather.](images/denver_search.png)
