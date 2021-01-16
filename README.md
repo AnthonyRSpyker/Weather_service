@@ -16,6 +16,10 @@ Root Menu:
 - READ ME
 
 Images folder:
+- denver_search.png
+- denver_search_from_list.png
+- grand_rapids_search.png
+- no_search.png
 
 
 Assets folder:
