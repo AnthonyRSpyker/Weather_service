@@ -74,7 +74,7 @@ function weather5Day(city){
     .then(function(fiveDay){
         var index = 1
         for(var i=0 ; i < fiveDay.list.length ; i++ ){
-            var date = moment().add(i, 'days').calendar();
+            //var date = moment().add(i, 'days').calendar();
         if(fiveDay.list[i].dt_txt.indexOf("12:00:00") !== -1){
              $(".day" + index).append("Date: " + fiveDay.list[i].dt_txt + "<br>") 
              $(".day" + index).append("Temp: " + fiveDay.list[i].main.temp + " &#8451;" + "<br>")
